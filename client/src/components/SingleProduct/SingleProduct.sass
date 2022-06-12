@@ -1,0 +1,84 @@
+.product
+    padding: 160px 0 180px 0
+    &-block
+        display: grid
+        grid-template-columns: 80px 610px 352px
+        column-gap: 40px
+    &-slider
+        &__item
+            width: 80px
+            height: 80px
+            cursor: pointer
+            img
+                width: 100%
+                height: 100%
+                object-fit: fill
+            &:nth-last-child(n+2)
+                margin-bottom: 40px
+    &-image
+        width: 610px
+        height: 510px
+        img
+            width: 100%
+            height: 100%
+            object-fit: contain
+    &-details
+        padding-left: 60px
+        &__title
+            font-family: 'Raleway'
+            font-weight: 600
+            font-size: 30px
+            line-height: 27px
+            color: #1D1F22
+            &_small
+                font-weight: 400
+                margin-top: 16px
+        &__text
+            font-family: 'Roboto Condensed'
+            font-weight: 700
+            font-size: 18px
+            line-height: 18px
+            color: #1D1F22
+            text-transform: uppercase
+        &__price
+            font-family: 'Raleway'
+            font-size: 24px
+            line-height: 24px
+            margin-top: 20px
+        &__description
+            font-family: 'Roboto'
+            font-weight: 400
+            font-size: 16px
+            line-height: 26px
+            color: #1D1F22
+            text-align: justify
+            margin-top: 40px
+        &__text
+            font-family: 'Roboto Condensed'
+            font-weight: 700
+            font-size: 18px
+            line-height: 18px
+            color: #1D1F22
+            text-transform: uppercase
+    &-form
+        margin-top: 43px
+        &__button
+            display: flex
+            justify-content: center
+            align-items: center
+            width: 100%
+            border: none
+            height: 52px
+            background: #5ECE7B
+            cursor: pointer
+            text-transform: uppercase
+            font-family: 'Raleway'
+            font-weight: 600
+            font-size: 16px
+            color: #FFFFFF
+            margin-top: 30px
+        &__content
+            &:nth-child(n+2)
+                margin-top: 25px
+            &_small
+                margin-top: 10px

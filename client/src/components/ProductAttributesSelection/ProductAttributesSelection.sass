@@ -1,0 +1,74 @@
+.product
+    &-selection
+        display: flex
+        align-items: center
+        flex-wrap: wrap
+        margin-top: 10px
+        &_column
+            display: grid
+            grid-template-columns: repeat(2, 45px)
+            column-gap: 8px
+            row-gap: 8px
+            margin-top: 10px
+        &_transparent
+            margin-left: 29px
+        &__item
+            &:nth-last-child(n+2)
+                margin-right: 8px
+            &_transparent:nth-last-child(n+2)
+                margin-right: 67px
+        &__input
+            position: absolute
+            z-index: -10
+            opacity: 0
+            &:checked+.product-selection__label_color::before
+                padding: 1px
+                border: 1px solid #5ECE7B
+            &:checked+.product-selection__label_transparent::before
+                background-color: #161932
+            &:checked+.product-selection__label_transparent
+                color: #FFFFFF
+        &__label
+            z-index: 500
+            cursor: pointer
+            position: relative
+            display: flex
+            align-items: center
+            justify-content: center
+            &::before
+                content: ''
+                display: flex
+                align-items: center
+                justify-content: center
+                position: absolute
+                z-index: -1
+            &_color
+                width: 32px
+                height: 32px
+                &::before
+                    width: 32px
+                    height: 32px
+                &_small
+                    width: 20px
+                    height: 20px
+                    &::before
+                        width: 20px
+                        height: 20px
+            &_transparent
+                width: 9px
+                height: 45px
+                font-weight: 400
+                font-size: 16px
+                letter-spacing: 0.05em
+                color: #1D1F22
+                &::before
+                    width: 63px
+                    height: 45px
+                    border: 1px solid #1D1F22
+                &_small
+                    width: 45px
+                    height: 30px
+                    font-size: 12px
+                    &::before
+                        width: 45px
+                        height: 30px

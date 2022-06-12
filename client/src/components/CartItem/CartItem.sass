@@ -1,0 +1,113 @@
+.cart
+    &__item
+        border-top: 1px solid #E5E5E5
+        padding: 24px 0
+        display: grid
+        grid-template-columns: auto 45px 200px
+        column-gap: 24px
+        &_small
+            border: none
+            padding: 0
+            grid-template-columns: 120px 24px 121px
+            column-gap: 8px
+            &:nth-last-child(n+2)
+                margin-bottom: 40px
+    &-info
+        &__name
+            font-family: 'Raleway'
+            font-weight: 600
+            font-size: 30px
+            line-height: 27px
+            color: #1D1F22
+            &_medium
+                font-weight: 400
+                margin-top: 16px
+            &_small
+                font-weight: 300
+                margin-top: 0
+                font-size: 16px
+        &__price
+            font-family: 'Raleway'
+            font-weight: 600
+            font-size: 24px
+            line-height: 24px
+            color: #1D1F22
+            margin-top: 20px
+            &_small
+                font-weight: 500
+                font-size: 16px
+                line-height: 16px
+                margin-top: 5px
+    &-amount
+        display: flex
+        flex-direction: column
+        justify-content: space-between
+        &__btn
+            position: relative
+            width: 45px
+            height: 45px
+            display: flex
+            justify-content: center
+            align-items: center
+            border: 1px solid #1D1F22
+            cursor: pointer
+            &::after
+                position: absolute
+                content: ""
+                height: 2px
+                width: 15px
+                background-color: #1D1F22
+                border-radius: 20px
+            &_small
+                width: 24px
+                height: 24px
+                &::after
+                    height: 1px
+                    width: 8px
+            &_plus
+                &::before
+                    content: ""
+                    position: absolute
+                    width: 2px
+                    height: 15px
+                    background-color: #1D1F22
+                    border-radius: 20px
+                &_small::before
+                    width: 1px
+                    height: 8px
+        &__text
+            font-family: 'Raleway'
+            font-weight: 500
+            font-size: 26px
+            color: #1D1F22
+            text-align: center
+            &_small
+                font-weight: 500
+                font-size: 16px
+    &-images
+        width: 200px
+        height: 288px
+        position: relative
+        display: flex
+        align-items: center
+        &_small
+            width: 121px
+            height: 190px
+        &__arrow
+            position: absolute
+            display: flex
+            align-items: center
+            justify-content: center
+            width: 30px
+            height: 30px
+            background: rgba(0, 0, 0, 0.73)
+            bottom: 16px
+            right: 16px
+            cursor: pointer
+            &_left
+                right: 54px
+                transform: rotate(180deg)
+    &-image
+        width: 100%
+        height: 100%
+        object-fit: contain
