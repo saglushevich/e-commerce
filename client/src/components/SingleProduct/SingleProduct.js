@@ -9,7 +9,8 @@ class SingleProduct extends Component {
         super(props);
         this.state = {
             selectedPhoto: 0,
-            itemId: Math.round(Math.random() * 500)
+            itemId: Math.round(Math.random() * 500),
+            pages: []
         }
     }
 
@@ -29,18 +30,21 @@ class SingleProduct extends Component {
     }
 
     render () {
-        const {id, name, brand, prices, gallery, description, attributes} = this.props.selectedProduct
+        const {id, name, brand, prices, gallery, description, attributes, inStock} = this.props.selectedProduct
         const {currency} = this.props;
 
         const photos = gallery.map((item, i) => <li key={i} onClick={() => this.onSelectPhoto(i)} className="product-slider__item"><img src={item} alt={name} /></li>);
 
-        const attributesItems = attributes.map(item => <ProductAttributesSelection key={item.id} data={item}/>)//itemId={id}
+        const attributesItems = attributes.map(item => <ProductAttributesSelection key={item.id} data={item}/>)
+        
         return (
             <div className="product" key={id}>
                 <div className="product-block">
-                    <ul className="product-slider">
-                        {photos}
-                    </ul>
+                    <div className="product-slider" >
+                        <ul className="product-slider__container">
+                            {photos.length > 1 ? photos : null}
+                        </ul>
+                    </div>
                     <div className="product-image"><img src={gallery[this.state.selectedPhoto]} alt={name} /></div>
                     <div className="product-details">
                         <h1 className="product-details__title">{name}</h1>
@@ -48,8 +52,8 @@ class SingleProduct extends Component {
                         <form className="product-form" onSubmit={this.onFormSubmit}>
                             {attributesItems}
                             <h3 className="product-details__text" style={{"marginTop": "35px"}}>price:</h3>
-                            <h3 className="product-details__text product-details__price">{currency}{prices.filter(item => item.currency.symbol === currency)[0].amount}</h3>
-                            <button className="product-form__button">add to cart</button>
+                            <h3 className="product-details__price">{currency}{prices.filter(item => item.currency.symbol === currency)[0].amount}</h3>
+                            <button disabled={!inStock} className="product-form__button">{inStock ? "add to cart" : "out of stock"}</button>
                         </form>
                         <div className="product-details__description" dangerouslySetInnerHTML={{ __html: description }} />
                     </div>

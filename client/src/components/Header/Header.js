@@ -6,7 +6,7 @@ import cartIcon from '../../resources/icons/cart.svg'
 import { connect } from 'react-redux';
 import * as actions from '../../reduxActions/reduxActions'
 import { getProductsByCategories} from '../../actions/actions'
-import CartItem from '../CartItem/CartItem';
+import Bag from '../Bag/Bag';
 
 class Header extends Component {
     constructor (props) {
@@ -40,8 +40,6 @@ class Header extends Component {
             )
         })
 
-        const bagItems = cart.map((item, i) => <CartItem key={item.id + i} type="small" itemId={item.id+i} price={item.prices.filter(item => item.currency.symbol === this.props.currency)[0]} {...item}/>)
-
         //const cartItems = this.props.cart.map((item, i) => <CartItem key={item.id + i} itemId={item.id+i} price={item.prices.filter(item => item.currency.symbol === this.props.currency)[0]} {...item}/>)
 
         return (
@@ -61,21 +59,7 @@ class Header extends Component {
                         </ul>
                     </div>
                 </div>
-                <div className={bagStatus ? "bag bag_open" : "bag"}>
-                    <div className="bag-dialog">
-                        <div className="bag-content">
-                            <div className="bag__header">My bag, <span>{cart.length > 1 ? `${cart.length} items` : `${cart.length} item`}</span></div>
-                            <ul className="bag-list">
-                                {bagItems}
-                            </ul>
-                            <div className="bag__total">Total <span>$200.00</span></div>
-                            <div className="bag-buttons">
-                                <NavLink to="/cart"><button className="bag__button">View bag</button></NavLink>
-                                <button className="bag__button bag__button_green">Check out</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {bagStatus ? <Bag/> : null}
             </header>
         )
     }

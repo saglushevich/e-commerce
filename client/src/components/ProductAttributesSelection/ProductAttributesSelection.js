@@ -7,7 +7,8 @@ class ProductAttributesSelection extends Component{
     constructor (props) {
         super(props);
         this.state = {
-            quantity: 0
+            quantity: 0,
+            a: Math.round(Math.random() * 500)
         }
     }
 
@@ -68,8 +69,8 @@ class ProductAttributesSelection extends Component{
             const {id, value, chosen} = item;
             return (
                 <li key={id} className={classes.productSelectionElementClass}>
-                    <input defaultChecked={chosen} onChange={() => this.onSetAttributes(data.name, value)} required type="radio" name={data.id} id={data.id+value} className="product-selection__input"/>
-                    {data.name === 'Color' ?  <label htmlFor={data.id+value} style={{'background': `${value}`}} className={classes.productSelectionLabelClass}></label> : <label htmlFor={data.id+value} className={classes.productSelectionLabelClass}>{value}</label>}
+                    <input defaultChecked={chosen} onChange={() => this.onSetAttributes(data.name, value)} required type="radio" name={this.state.a} id={data.id+value+this.state.a} className="product-selection__input"/>
+                    {data.name === 'Color' ?  <label htmlFor={data.id+value+this.state.a} style={{'background': `${value}`}} className={classes.productSelectionLabelClass}></label> : <label htmlFor={data.id+value+this.state.a} className={classes.productSelectionLabelClass}>{value}</label>}
                 </li>
             )
         })

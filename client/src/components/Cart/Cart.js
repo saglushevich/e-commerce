@@ -10,7 +10,8 @@ class Cart extends Component {
         this.state = {
             tax: 0,
             quantity: this.props.cart.length,
-            total: 0,
+            total: this.props.cart.map(item => item.prices.filter(item => item.currency.symbol === this.props.currency)[0].amount)
+            // cartItems: []
         }
     }
 
@@ -25,16 +26,36 @@ class Cart extends Component {
         }
     }
 
-    // onChangeTotal = (value) => {
-    //     this.setState(({total}) => ({
-    //         total: [...total, value]
-    //     }))
-    // }
+    onChangeTotalPrice = (value) => {
+        this.setState(({total}) => ({
+            total: [...total, value]
+        }))
+
+        let totalPrice = 0
+
+        this.state.total.forEach(item => {
+            totalPrice = totalPrice + item
+        })
+
+        if (totalPrice < 0) {
+            this.setState(({total}) => ({
+                total: []
+            }))
+        }
+    }
+
 
     render () {
         const {tax, quantity, total} = this.state
+        const cartItems = this.props.cart.map((item, i) => <CartItem type="large" key={item.id + i} onChangeTotalPrice={this.onChangeTotalPrice} onChangeTotalQuantity={this.onChangeTotalQuantity} itemId={item.id+i} price={item.prices.filter(item => item.currency.symbol === this.props.currency)[0]} {...item}/>)
 
-        const cartItems = this.props.cart.map((item, i) => <CartItem type="large" key={item.id + i} onChangeTotal={this.onChangeTotal} onChangeTotalQuantity={this.onChangeTotalQuantity} itemId={item.id+i} price={item.prices.filter(item => item.currency.symbol === this.props.currency)[0]} {...item}/>) 
+        let totalPrice = 0
+        console.log(total)
+
+        total.forEach(item => {
+            totalPrice = totalPrice + item
+        })
+
         return (
             <section className="cart">
                 <h1 className="cart__title">Cart</h1>
@@ -45,7 +66,7 @@ class Cart extends Component {
                     <div className="cart-order__description">
                         <div className="cart-order__text">Tax 21%: <span>${tax}</span></div>
                         <div className="cart-order__text">Quantity: <span>{quantity}</span></div>
-                        <div className="cart-order__text cart-order__total">Total: <span>${total}</span></div>
+                        <div className="cart-order__text cart-order__total">Total: <span>${totalPrice.toFixed(2)}</span></div>
                     </div>
                 </div>
                 <button className="cart__button">order</button>

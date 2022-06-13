@@ -10,7 +10,7 @@ class CartItem extends Component {
         super(props);
         this.state = {
             slideIndex: 1,
-            quantity: 1,
+            quantity: 1
         }
     }
 
@@ -23,7 +23,13 @@ class CartItem extends Component {
                 quantity: 0
             })
         }
-        this.props.onChangeTotalQuantity(value)
+
+        if (value < 0) {
+            this.props.onChangeTotalPrice(this.props.price.amount * -1)
+        } else {
+            this.props.onChangeTotalPrice(this.props.price.amount)
+        }
+        
     }
 
     nextSlide = () => {
@@ -54,12 +60,14 @@ class CartItem extends Component {
             }))
         }
     }
+
         
     render () {
         const {itemId, name, brand, price, gallery, attributes, type} = this.props;
         const {quantity, slideIndex} = this.state;
 
-        const attributesItems = attributes.map(item => <ProductAttributesSelection cartItem={this.props} key={item.id} data={item}/>)
+
+        const attributesItems = attributes.map(item => <ProductAttributesSelection type={type} cartItem={this.props} key={item.id} data={item}/>)
 
         const classes = {
             cartMainClass: type === 'small' ? " cart__item_small" : "", 
@@ -86,7 +94,7 @@ class CartItem extends Component {
                 </div>
                 <div className={"cart-images" + classes.cartImagesClass}>
                     <img src={gallery[slideIndex - 1]} alt={name} className={"cart-image" + classes.cartImageClass}/>
-                    <div className="cart-images__arrows">
+                    <div className="cart-images__arrows" style={gallery.length > 1 ? {"display":"flex"} : {"display":"none"}}>
                         <div onClick={() => this.prevSlide()} className="cart-images__arrow cart-images__arrow_left"><img src={arrow} alt="arrow" /></div>
                         <div onClick={() => this.nextSlide()} className="cart-images__arrow"><img src={arrow} alt="arrow" /></div>
                     </div> 
