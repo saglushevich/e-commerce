@@ -9,32 +9,29 @@ class CartItem extends Component {
     constructor (props) {
         super(props);
         this.state = {
-            slideIndex: 1,
-            quantity: 1
+            slideIndex: 1
         }
     }
 
     onChangeQuantity = (value) => {
-        this.setState(state => ({
-            quantity: state.quantity + value
-        }))
-        if (this.state.quantity <= 0 && value < 0) {
-            this.setState({
-                quantity: 0
-            })
+        let item = {...this.props};
+        let {cart} = this.props;
+
+        if (this.props.quantity < 1) {
+            item = {...this.props, quantity: 1};
+        } else {
+            item = {...this.props, quantity: this.props.quantity + value}
         }
 
-        if (value < 0) {
-            this.props.onChangeTotalPrice(this.props.price.amount * -1)
-        } else {
-            this.props.onChangeTotalPrice(this.props.price.amount)
-        }
+        const itemId = cart.findIndex(elem => elem.id === this.props.id);
         
+        this.props.updateCart([...cart.slice(0, itemId), item, ...cart.slice(itemId + 1)])
     }
 
     nextSlide = () => {
         const {slideIndex} = this.state
         const {gallery} = this.props;
+
         if (slideIndex !== gallery.length) {
             this.setState(state => ({
                 slideIndex: state.slideIndex + 1
@@ -49,6 +46,7 @@ class CartItem extends Component {
     prevSlide = () => {
         const {slideIndex} = this.state
         const {gallery} = this.props;
+        
         if(slideIndex !== 1){
             this.setState(state => ({
                 slideIndex: state.slideIndex - 1
@@ -63,11 +61,12 @@ class CartItem extends Component {
 
         
     render () {
-        const {itemId, name, brand, price, gallery, attributes, type} = this.props;
-        const {quantity, slideIndex} = this.state;
-
-
+        const {itemId, name, brand, gallery, attributes, type, quantity, prices, currency} = this.props;
+        const {slideIndex} = this.state;
+        
         const attributesItems = attributes.map(item => <ProductAttributesSelection type={type} cartItem={this.props} key={item.id} data={item}/>)
+
+        let price = prices.filter(item => item.currency.symbol === currency)[0];
 
         const classes = {
             cartMainClass: type === 'small' ? " cart__item_small" : "", 
@@ -79,12 +78,13 @@ class CartItem extends Component {
             cartImagesClass: type === 'small' ? " cart-images_small" : "",
             cartImageClass: type === 'small' ? " cart-image_small" : ""
         }
+
         return (
             <li key={itemId} className={"cart__item" + classes.cartMainClass}>
                 <div className="cart-info">
                      <h2 className={"cart-info__name" + classes.cartHeaderClass}>{name}</h2>
                      <h3 className={"cart-info__name cart-info__name_medium" + classes.cartHeaderClass}>{brand}</h3>
-                     <h3 className={"cart-info__price" + classes.cartPriceClass} style={{"marginBottom": "20px"}}>{price.currency.symbol}{price.amount}</h3>
+                     <h3 className={"cart-info__price" + classes.cartPriceClass} style={{"marginBottom": "20px"}}>{price.currency.symbol}{price.amount * quantity}</h3>
                     {attributesItems}
                 </div>
                 <div className="cart-amount">
@@ -107,6 +107,9 @@ class CartItem extends Component {
 const mapStateToProps = (state) => {
     return {
         selectedProduct: state.selectedProduct,
+        cart: state.cart,
+        currency: state.currency,
+        orderInformation: state.orderInformation
     }
 }
 

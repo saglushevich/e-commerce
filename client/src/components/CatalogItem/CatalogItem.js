@@ -13,11 +13,13 @@ class CatalogItem extends Component {
     }
 
     render () {
-        const {image, name, price, id, inStock, brand} = this.props;
+        const {name, prices, id, inStock, brand, currency, gallery} = this.props;
+
+        let price = prices.filter(item => item.currency.symbol === currency)[0]
         return (
             <NavLink to={`/product`}>
                 <li key={id} className="catalog__item" onClick={() => this.onProductSelect(id)}>
-                    <div className="catalog__image"><img src={image} alt={name} /></div>
+                    <div className="catalog__image"><img src={gallery[0]} alt={name} /></div>
                     <h2 className="catalog__title">{name}, {brand}</h2>
                     <h3 className="catalog__price">{price.currency.symbol}{price.amount}</h3>
                     <div style={inStock ? {"display":"flex"} : {"display":"none"}} className="catalog__cart"><img src={cartIcon} alt="cart" /></div>
@@ -28,4 +30,10 @@ class CatalogItem extends Component {
     }
 }
 
-export default connect(null, actions)(CatalogItem)
+const mapStateToProps = (state) => {
+    return {
+        currency: state.currency
+    }
+}
+
+export default connect(mapStateToProps, actions)(CatalogItem)

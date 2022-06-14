@@ -7,28 +7,23 @@ class ProductAttributesSelection extends Component{
     constructor (props) {
         super(props);
         this.state = {
-            quantity: 0,
-            a: Math.round(Math.random() * 500)
+            index: Math.round(Math.random() * 500)
         }
     }
 
     onSetAttributes = (name, value) => {
-        const {selectedProduct, selectedAttributes} = this.props;
+        const {selectedProduct, selectedAttributes, setSelectedAttributes, cartItem, cart, updateCart} = this.props;
 
-        this.props.setSelectedAttributes([]);
-
-        this.setState(({quantity}) => ({
-            quantity: quantity + 1
-        }))
+        setSelectedAttributes([]);
 
         selectedProduct.attributes.map(attr => {
             if (attr.name === name) {
-                this.props.setSelectedAttributes([...selectedAttributes.filter(item => item.name !== name), {...attr, id: attr.id + Math.round(Math.random() * 500), items: attr.items.map(item => item.value === value ? {...item, chosen: true} : {...item, chosen: false})}])                     
+                const notChangedAttributes = selectedAttributes.filter(item => item.name !== name);
+                const changedAttributes = {...attr, id: attr.id + Math.round(Math.random() * 500), items: attr.items.map(item => item.value === value ? {...item, chosen: true} : {...item, chosen: false})}
+                setSelectedAttributes([...notChangedAttributes, changedAttributes])                     
             }
             return attr;
         })
-
-        const {cartItem, cart} = this.props;
 
         if (cartItem) {
             cart.map(item => {
@@ -45,7 +40,7 @@ class ProductAttributesSelection extends Component{
 
                             const newCart = [...cart.slice(0, index), updatedItem, ...cart.slice(index + 1)]
 
-                            this.props.updateCart(newCart)
+                            updateCart(newCart)
                         }
                         return attr;
                     })
@@ -57,20 +52,34 @@ class ProductAttributesSelection extends Component{
 
     render () {
         const {data, type} = this.props;
+        const {index} = this.state;
 
         const classes = {
             productSelectionBlockClass: type === 'small' ? "product-form__content_small" : "product-form__content",
-            productSelectionListClass: type === 'small' ? (data.name === 'Color' ? "product-selection" : "product-selection_column") : (data.name === 'Color' ? "product-selection" : "product-selection product-selection_transparent"),
-            productSelectionElementClass: data.name === 'Color' ? "product-selection__item" : "product-selection__item product-selection__item_transparent",
-            productSelectionLabelClass: type === 'small' ? (data.name ==='Color' ? "product-selection__label product-selection__label_color product-selection__label_color_small" : "product-selection__label product-selection__label_transparent product-selection__label_transparent_small") : (data.name === 'Color' ? "product-selection__label product-selection__label_color" : "product-selection__label product-selection__label_transparent")
+
+            productSelectionListClass: type === 'small' ? 
+                (data.name === 'Color' ? "product-selection" : "product-selection_column") : 
+                (data.name === 'Color' ? "product-selection" : "product-selection product-selection_transparent"),
+
+            productSelectionElementClass: data.name === 'Color' ? 
+                "product-selection__item" : 
+                "product-selection__item product-selection__item_transparent",
+
+            productSelectionLabelClass: type === 'small' ? 
+                (data.name ==='Color' ? "product-selection__label product-selection__label_color product-selection__label_color_small" : 
+                "product-selection__label product-selection__label_transparent product-selection__label_transparent_small") : 
+                (data.name === 'Color' ? "product-selection__label product-selection__label_color" : 
+                "product-selection__label product-selection__label_transparent")
         }
 
         const elements = data.items.map(item => {
             const {id, value, chosen} = item;
             return (
                 <li key={id} className={classes.productSelectionElementClass}>
-                    <input defaultChecked={chosen} onChange={() => this.onSetAttributes(data.name, value)} required type="radio" name={this.state.a} id={data.id+value+this.state.a} className="product-selection__input"/>
-                    {data.name === 'Color' ?  <label htmlFor={data.id+value+this.state.a} style={{'background': `${value}`}} className={classes.productSelectionLabelClass}></label> : <label htmlFor={data.id+value+this.state.a} className={classes.productSelectionLabelClass}>{value}</label>}
+                    <input defaultChecked={chosen} onChange={() => this.onSetAttributes(data.name, value)} required type="radio" name={index} id={data.id+value+index} className="product-selection__input"/>
+                    {data.name === 'Color' ?  
+                    <label htmlFor={data.id+value+index} style={{'background': `${value}`}} className={classes.productSelectionLabelClass}></label> : 
+                    <label htmlFor={data.id+value+index} className={classes.productSelectionLabelClass}>{value}</label>}
                 </li>
             )
         })

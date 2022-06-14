@@ -22,25 +22,24 @@ class Header extends Component {
     }
 
     render () {
-        const {currencies, categories, currency, cart} = this.props;
+        const {currencies, categories, currency, cart, products, setCurrency} = this.props;
         const {currencyStatus, bagStatus} = this.state;
 
         const menuItems = categories.map(item => {
             const {name} = item;
-            return <li onClick={() => this.onSelectCategory(name)} key={name} className={this.props.products.name === name ? "menu__item menu__item_active"  : "menu__item"}>{name}</li>
+            return <li onClick={() => this.onSelectCategory(name)} key={name} className={products.name === name ? "menu__item menu__item_active"  : "menu__item"}>{name}</li>
         })
 
         const currencySelection = currencies.map(item => {
             const {symbol, label} = item
             return (
-                <li key={symbol} onClick={() => this.props.setCurrency(symbol)} className="currency-selection__item">
+                <li key={symbol} onClick={() => setCurrency(symbol)} className="currency-selection__item">
                     <input defaultChecked={currency === symbol ? true : false} type="radio" name='currency' id={label} className="currency-selection__input"/>
                     <label htmlFor={label} className="currency-selection__label">{symbol} {label}</label>
                 </li>
             )
         })
 
-        //const cartItems = this.props.cart.map((item, i) => <CartItem key={item.id + i} itemId={item.id+i} price={item.prices.filter(item => item.currency.symbol === this.props.currency)[0]} {...item}/>)
 
         return (
             <header className="header">

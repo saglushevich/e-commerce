@@ -10,7 +10,6 @@ class SingleProduct extends Component {
         this.state = {
             selectedPhoto: 0,
             itemId: Math.round(Math.random() * 500),
-            pages: []
         }
     }
 
@@ -25,7 +24,7 @@ class SingleProduct extends Component {
         this.setState(({itemId}) => ({
             itemId: itemId + 1
         }))
-        this.props.addProductToCart({...this.props.selectedProduct, id: this.props.selectedProduct.id + this.state.itemId , attributes: this.props.selectedAttributes})
+        this.props.addProductToCart({...this.props.selectedProduct, quantity: 1, id: this.props.selectedProduct.id + this.state.itemId , attributes: this.props.selectedAttributes})
         this.props.setSelectedAttributes([])
     }
 
