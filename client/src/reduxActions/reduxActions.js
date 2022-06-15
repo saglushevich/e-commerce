@@ -26,13 +26,6 @@ export const setCurrency = (value) => {
     }
 }
 
-export const setSelectedProduct = (value) => {
-    return {
-        type: 'SET_SELECTED_PRODUCT',
-        payload: value
-    }
-}
-
 export const addProductToCart = (value) => {
     return {
         type: 'ADD_PRODUCT_TO_CART',
@@ -40,12 +33,12 @@ export const addProductToCart = (value) => {
     }
 }
 
-export const setSelectedAttributes = (value) => {
-    return {
-        type: 'SET_SELECTED_ATTRIBUTES',
-        payload: value
-    }
-}
+// export const setSelectedAttributes = (value) => {
+//     return {
+//         type: 'SET_SELECTED_ATTRIBUTES',
+//         payload: value
+//     }
+// }
 
 export const updateCart = (value) => {
     return {

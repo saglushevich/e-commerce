@@ -10,7 +10,14 @@ class SingleProduct extends Component {
         this.state = {
             selectedPhoto: 0,
             itemId: Math.round(Math.random() * 500),
+            selectedAttributes: this.props.data.attributes
         }
+    }
+
+    onSetSelectedAttributes = (newSelectedAttributes) => {
+        this.setState({
+            selectedAttributes: newSelectedAttributes
+        })
     }
 
     onSelectPhoto = (i) => {
@@ -21,20 +28,27 @@ class SingleProduct extends Component {
 
     onFormSubmit = (e) => {
         e.preventDefault();
+        const {data, addProductToCart} = this.props;
+        const {itemId, selectedAttributes} = this.state;
+
         this.setState(({itemId}) => ({
             itemId: itemId + 1
         }))
-        this.props.addProductToCart({...this.props.selectedProduct, quantity: 1, id: this.props.selectedProduct.id + this.state.itemId , attributes: this.props.selectedAttributes})
-        this.props.setSelectedAttributes([])
+        
+        addProductToCart({...data, quantity: 1, id: data.id + itemId, attributes: selectedAttributes})
+
     }
+    
 
     render () {
-        const {id, name, brand, prices, gallery, description, attributes, inStock} = this.props.selectedProduct
+        const {id, name, brand, prices, gallery, description, attributes, inStock} = this.props.data
+
         const {currency} = this.props;
 
         const photos = gallery.map((item, i) => <li key={i} onClick={() => this.onSelectPhoto(i)} className="product-slider__item"><img src={item} alt={name} /></li>);
 
-        const attributesItems = attributes.map(item => <ProductAttributesSelection key={item.id} data={item}/>)
+        const attributesItems = attributes.map(item => <ProductAttributesSelection product={this.state.selectedAttributes} key={item.id} data={item} onSetSelectedAttributes={this.onSetSelectedAttributes}/>)
+        
         
         return (
             <div className="product" key={id}>
@@ -64,9 +78,7 @@ class SingleProduct extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        selectedProduct: state.selectedProduct,
         currency: state.currency,
-        selectedAttributes: state.selectedAttributes,
         cart: state.cart
     }
 }

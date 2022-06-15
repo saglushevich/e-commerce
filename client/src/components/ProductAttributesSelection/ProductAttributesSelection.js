@@ -12,26 +12,30 @@ class ProductAttributesSelection extends Component{
     }
 
     onSetAttributes = (name, value) => {
-        const {selectedProduct, selectedAttributes, setSelectedAttributes, cartItem, cart, updateCart} = this.props;
+        const {cart,product, onSetSelectedAttributes, cartItem, updateCart} = this.props;
 
-        setSelectedAttributes([]);
 
-        selectedProduct.attributes.map(attr => {
-            if (attr.name === name) {
-                const notChangedAttributes = selectedAttributes.filter(item => item.name !== name);
-                const changedAttributes = {...attr, id: attr.id + Math.round(Math.random() * 500), items: attr.items.map(item => item.value === value ? {...item, chosen: true} : {...item, chosen: false})}
-                setSelectedAttributes([...notChangedAttributes, changedAttributes])                     
-            }
-            return attr;
-        })
+        if (product) {
+            product.map(attr => {
+                if (attr.name === name) {
+
+                    const notChangedAttributes = product.filter(item => item.name !== name);
+                    const changedAttribute = {...attr, id: attr.id + Math.round(Math.random() * 500),  items: attr.items.map(item => item.value === value ? {...item, chosen: true} : {...item, chosen: false})};
+                    
+                    onSetSelectedAttributes([...notChangedAttributes, changedAttribute])
+                }
+                return attr;
+            })
+
+        }
 
         if (cartItem) {
             cart.map(item => {
                 if (item.id === cartItem.id) {
                     item.attributes.map(attr => {
-                        if (attr.name === name) {
-                            const index = cart.findIndex(elem => elem.id === cartItem.id)
-                            const attrIndex = item.attributes.findIndex(elem => elem.name === name)
+                        if(attr.name === name) {
+                            const index = cart.findIndex(elem => elem.id === cartItem.id);
+                            const attrIndex = item.attributes.findIndex(elem => elem.name === name);
 
                             const before = item.attributes.slice(0, attrIndex);
                             const after = item.attributes.slice(attrIndex + 1);
@@ -52,6 +56,7 @@ class ProductAttributesSelection extends Component{
 
     render () {
         const {data, type} = this.props;
+        
         const {index} = this.state;
 
         const classes = {
@@ -97,9 +102,7 @@ class ProductAttributesSelection extends Component{
 
 const mapStateToProps = (state) => {
     return {
-        cart: state.cart,
-        selectedProduct: state.selectedProduct,
-        selectedAttributes: state.selectedAttributes
+        cart: state.cart
     }
 }
 export default connect(mapStateToProps, actions)(ProductAttributesSelection)

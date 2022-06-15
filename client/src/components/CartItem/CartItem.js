@@ -64,7 +64,8 @@ class CartItem extends Component {
         const {itemId, name, brand, gallery, attributes, type, quantity, prices, currency} = this.props;
         const {slideIndex} = this.state;
         
-        const attributesItems = attributes.map(item => <ProductAttributesSelection type={type} cartItem={this.props} key={item.id} data={item}/>)
+
+        let attributesItems = attributes.map(item => <ProductAttributesSelection type={type} cartItem={this.props} key={item.id} data={item}/>)
 
         let price = prices.filter(item => item.currency.symbol === currency)[0];
 
@@ -106,10 +107,8 @@ class CartItem extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        selectedProduct: state.selectedProduct,
         cart: state.cart,
-        currency: state.currency,
-        orderInformation: state.orderInformation
+        currency: state.currency
     }
 }
 

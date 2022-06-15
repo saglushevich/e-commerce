@@ -4,21 +4,16 @@ import cartIcon from '../../resources/icons/cart_white.svg'
 import {NavLink} from "react-router-dom";
 import * as actions from '../../reduxActions/reduxActions'
 import {connect} from 'react-redux'
-import {getProductInfo} from '../../actions/actions'
 
 class CatalogItem extends Component {
-
-    onProductSelect = async () => {
-        await getProductInfo(this.props.id).then(items => items.data.product).then(items => this.props.setSelectedProduct(items))
-    }
 
     render () {
         const {name, prices, id, inStock, brand, currency, gallery} = this.props;
 
         let price = prices.filter(item => item.currency.symbol === currency)[0]
         return (
-            <NavLink to={`/product`}>
-                <li key={id} className="catalog__item" onClick={() => this.onProductSelect(id)}>
+            <NavLink to={`/product/${id}`}>
+                <li key={id} className="catalog__item" >
                     <div className="catalog__image"><img src={gallery[0]} alt={name} /></div>
                     <h2 className="catalog__title">{name}, {brand}</h2>
                     <h3 className="catalog__price">{price.currency.symbol}{price.amount}</h3>

@@ -2,22 +2,46 @@ import { Component } from "react";
 import Header from "../Header/Header";
 import SingleProduct from "../SingleProduct/SingleProduct";
 import {connect} from 'react-redux'
+import {withRouter} from "react-router-dom"
+import {getProductInfo} from '../../actions/actions'
 
 class SingleProductPage extends Component {
+    constructor (props) {
+        super(props);
+        this.state = {
+            productId: this.props.match.params.product_id,
+            data: {}
+        }
+    }
+
+    getData = async () => {
+        await getProductInfo(this.state.productId).then(items => items.data.product).then(items => {
+            this.setState({
+                data: items
+            })
+        })
+    }
+
+    componentDidMount () {
+        this.getData()
+    }
+
     render () {
+        const {data} = this.state
+
         return (
             <>
                 <Header/>
-                {this.props.selectedProduct.name ? <SingleProduct/> : 'loading'}
+                {data.name ? <SingleProduct data={data}/> : 'loading'}
             </>
         )
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        selectedProduct: state.selectedProduct,
-    }
-}
+// const mapStateToProps = (state) => {
+//     return {
+//         selectedProduct: state.selectedProduct,
+//     }
+// }
 
-export default connect(mapStateToProps)(SingleProductPage)
+export default connect(null)(withRouter(SingleProductPage))
