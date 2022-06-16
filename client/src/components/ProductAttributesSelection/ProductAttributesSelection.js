@@ -11,51 +11,8 @@ class ProductAttributesSelection extends Component{
         }
     }
 
-    onSetAttributes = (name, value) => {
-        const {cart,product, onSetSelectedAttributes, cartItem, updateCart} = this.props;
-
-
-        if (product) {
-            product.map(attr => {
-                if (attr.name === name) {
-
-                    const notChangedAttributes = product.filter(item => item.name !== name);
-                    const changedAttribute = {...attr, id: attr.id + Math.round(Math.random() * 500),  items: attr.items.map(item => item.value === value ? {...item, chosen: true} : {...item, chosen: false})};
-                    
-                    onSetSelectedAttributes([...notChangedAttributes, changedAttribute])
-                }
-                return attr;
-            })
-
-        }
-
-        if (cartItem) {
-            cart.map(item => {
-                if (item.id === cartItem.id) {
-                    item.attributes.map(attr => {
-                        if(attr.name === name) {
-                            const index = cart.findIndex(elem => elem.id === cartItem.id);
-                            const attrIndex = item.attributes.findIndex(elem => elem.name === name);
-
-                            const before = item.attributes.slice(0, attrIndex);
-                            const after = item.attributes.slice(attrIndex + 1);
-
-                            const updatedItem = {...item, attributes: [...before, {...attr, items: attr.items.map(item => item.value === value ? {...item, chosen: true} : {...item, chosen: false})}, ...after]};
-
-                            const newCart = [...cart.slice(0, index), updatedItem, ...cart.slice(index + 1)]
-
-                            updateCart(newCart)
-                        }
-                        return attr;
-                    })
-                }
-                return item;
-            })
-        }
-    }
-
     render () {
-        const {data, type} = this.props;
+        const {data, type, onSetAttributes} = this.props;
         
         const {index} = this.state;
 
@@ -81,7 +38,7 @@ class ProductAttributesSelection extends Component{
             const {id, value, chosen} = item;
             return (
                 <li key={id} className={classes.productSelectionElementClass}>
-                    <input defaultChecked={chosen} onChange={() => this.onSetAttributes(data.name, value)} required type="radio" name={index} id={data.id+value+index} className="product-selection__input"/>
+                    <input defaultChecked={chosen} disabled={onSetAttributes ? false : true} onChange={onSetAttributes ? () => onSetAttributes(data.name, value) : null} required type="radio" name={index} id={data.id+value+index} className="product-selection__input"/>
                     {data.name === 'Color' ?  
                     <label htmlFor={data.id+value+index} style={{'background': `${value}`}} className={classes.productSelectionLabelClass}></label> : 
                     <label htmlFor={data.id+value+index} className={classes.productSelectionLabelClass}>{value}</label>}

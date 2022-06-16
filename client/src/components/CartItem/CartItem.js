@@ -59,13 +59,11 @@ class CartItem extends Component {
         }
     }
 
-        
     render () {
-        const {itemId, name, brand, gallery, attributes, type, quantity, prices, currency} = this.props;
+        const {name, brand, gallery, type, quantity, prices, currency, id, attributes} = this.props;
         const {slideIndex} = this.state;
-        
 
-        let attributesItems = attributes.map(item => <ProductAttributesSelection type={type} cartItem={this.props} key={item.id} data={item}/>)
+        let attributesItems = attributes.map(item => <ProductAttributesSelection type={type} key={item.id} data={item} />)
 
         let price = prices.filter(item => item.currency.symbol === currency)[0];
 
@@ -81,12 +79,13 @@ class CartItem extends Component {
         }
 
         return (
-            <li key={itemId} className={"cart__item" + classes.cartMainClass}>
+            <li key={id} className={"cart__item" + classes.cartMainClass}>
                 <div className="cart-info">
                      <h2 className={"cart-info__name" + classes.cartHeaderClass}>{name}</h2>
                      <h3 className={"cart-info__name cart-info__name_medium" + classes.cartHeaderClass}>{brand}</h3>
                      <h3 className={"cart-info__price" + classes.cartPriceClass} style={{"marginBottom": "20px"}}>{price.currency.symbol}{price.amount * quantity}</h3>
                     {attributesItems}
+
                 </div>
                 <div className="cart-amount">
                     <div onClick={() => this.onChangeQuantity(1)} className={"cart-amount__btn cart-amount__btn_plus" + classes.cartPlusBtnClass}></div>

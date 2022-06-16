@@ -6,7 +6,7 @@ import cartIcon from '../../resources/icons/cart.svg'
 import { connect } from 'react-redux';
 import * as actions from '../../reduxActions/reduxActions'
 import { getProductsByCategories} from '../../actions/actions'
-import Bag from '../Bag/Bag';
+import CartItem from '../CartItem/CartItem'
 
 class Header extends Component {
     constructor (props) {
@@ -40,6 +40,14 @@ class Header extends Component {
             )
         })
 
+        const bagItems = cart.map((item, i) => <CartItem key={item.id + i} type="small" itemId={item.id+i} price={item.prices.filter(item => item.currency.symbol === this.props.currency)[0]} {...item}/>)
+
+        let totalPrice = 0;
+        cart.forEach(item => {
+            totalPrice = totalPrice + (item.prices.filter(item => item.currency.symbol === currency)[0].amount * item.quantity)
+        })
+
+        sessionStorage.setItem('totalPrice', totalPrice)
 
         return (
             <header className="header">
@@ -51,14 +59,29 @@ class Header extends Component {
                     <div onClick={() => this.setState(state => ({currencyStatus: !state.currencyStatus}))} className="tools__currency">{currency}<span style={currencyStatus ? {"transform" : "rotate(225deg)"} : {"transform" : "rotate(45deg)"}} className="tools__arrow"></span></div>
                     <div onClick={() => this.setState(state => ({bagStatus: !state.bagStatus}))} className="tools__cart"><img src={cartIcon} alt="emptyCart" /><span style={cart.length ? {"display":"flex"} : {"display":"none"}}>{cart.length}</span></div>
                 </div>
-                <div className="currency" style={currencyStatus ? {"display": 'block'} : {"display": "none"}}>
-                    <div className="currency-dialog">
+                <div className="currency" style={currencyStatus ? {"opacity": '1'} : {"opacity": "0"}}>
+                    <div className="currency-dialog" style={currencyStatus ? {"display": 'block'} : {"display": "none"}}>
                         <ul className="currency-selection">
                             {currencySelection}
                         </ul>
                     </div>
                 </div>
-                {bagStatus ? <Bag/> : null}
+
+                <div className="bag" style={bagStatus ? {"display" : "block"} : {"display": "none"}}>
+                    <div className="bag-dialog">
+                        <div className="bag-content">
+                            <div className="bag__header">My bag, <span>{cart.length > 1 ? `${cart.length} items` : `${cart.length} item`}</span></div>
+                            <ul className="bag-list">
+                                {bagItems}
+                            </ul>
+                            <div className="bag__total">Total <span>{currency}{totalPrice.toFixed(2)}</span></div>
+                            <div className="bag-buttons">
+                                <NavLink to="/cart"><button className="bag__button">View bag</button></NavLink>
+                                <button className="bag__button bag__button_green">Check out</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </header>
         )
     }

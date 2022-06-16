@@ -8,17 +8,17 @@ class Cart extends Component {
 
     render () {
         const {cart, currency} = this.props;
-        const cartItems = cart.map((item, i) => <CartItem type="large" key={item.id + i} itemId={item.id+i} {...item}/>)
+
+        // console.log(cart)
+        const cartItems = cart.map((item, i) => <CartItem type="large" key={item.id + i} {...item}/>)
+
 
         let totalQuantity = 0;
         cart.forEach(item => {
             totalQuantity = totalQuantity + item.quantity
         })
 
-        let totalPrice = 0;
-        cart.forEach(item => {
-            totalPrice = totalPrice + (item.prices.filter(item => item.currency.symbol === currency)[0].amount * item.quantity)
-        })
+        let totalPrice = +sessionStorage.getItem('totalPrice');
 
         return (
             <section className="cart">

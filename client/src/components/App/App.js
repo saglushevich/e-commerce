@@ -5,7 +5,6 @@ import SingleProductPage from "../Pages/SingleProductPage";
 import CartPage from "../Pages/CartPage";
 import {BrowserRouter, Route, Switch} from "react-router-dom";
 import {getCurrencies, getCategories, getProductsByCategories} from '../../actions/actions'
-import Bag from "../Bag/Bag";
 import * as actions from '../../reduxActions/reduxActions'
 import {connect} from 'react-redux'
 

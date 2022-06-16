@@ -9,7 +9,6 @@ class SingleProduct extends Component {
         super(props);
         this.state = {
             selectedPhoto: 0,
-            itemId: Math.round(Math.random() * 500),
             selectedAttributes: this.props.data.attributes
         }
     }
@@ -20,22 +19,37 @@ class SingleProduct extends Component {
         })
     }
 
+    onSetAttributes = (name, value) => {
+        const {selectedAttributes} = this.state
+        selectedAttributes.map(attr => {
+            if (attr.name === name) {
+
+                const notChangedAttributes = selectedAttributes.filter(item => item.name !== name);
+                const changedAttribute = {...attr, items: attr.items.map(item => item.value === value ? {...item, chosen: true} : {...item, chosen: false})};
+                
+                this.onSetSelectedAttributes([...notChangedAttributes, changedAttribute])
+            }
+            return attr;
+        })
+    }
+
     onSelectPhoto = (i) => {
         this.setState({
             selectedPhoto: i
         })
     }
 
+
     onFormSubmit = (e) => {
         e.preventDefault();
         const {data, addProductToCart} = this.props;
-        const {itemId, selectedAttributes} = this.state;
+        const {selectedAttributes} = this.state;
 
-        this.setState(({itemId}) => ({
-            itemId: itemId + 1
-        }))
+        let newItem = {...data, quantity: 1, attributes: selectedAttributes}
         
-        addProductToCart({...data, quantity: 1, id: data.id + itemId, attributes: selectedAttributes})
+        addProductToCart(newItem)
+
+        console.log(newItem)
 
     }
     
@@ -47,8 +61,7 @@ class SingleProduct extends Component {
 
         const photos = gallery.map((item, i) => <li key={i} onClick={() => this.onSelectPhoto(i)} className="product-slider__item"><img src={item} alt={name} /></li>);
 
-        const attributesItems = attributes.map(item => <ProductAttributesSelection product={this.state.selectedAttributes} key={item.id} data={item} onSetSelectedAttributes={this.onSetSelectedAttributes}/>)
-        
+        const attributesItems = attributes.map(item => <ProductAttributesSelection  key={item.id} data={item} onSetAttributes={this.onSetAttributes}/>)
         
         return (
             <div className="product" key={id}>
@@ -60,7 +73,7 @@ class SingleProduct extends Component {
                     </div>
                     <div className="product-image"><img src={gallery[this.state.selectedPhoto]} alt={name} /></div>
                     <div className="product-details">
-                        <h1 className="product-details__title">{name}</h1>
+                        <h1 className="product-details__title" onClick={() => console.log(this.state.selectedAttributes)}>{name}</h1>
                         <h2 className="product-details__title product-details__title_small">{brand}</h2>
                         <form className="product-form" onSubmit={this.onFormSubmit}>
                             {attributesItems}
