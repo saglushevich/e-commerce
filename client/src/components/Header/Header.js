@@ -43,10 +43,14 @@ class Header extends Component {
         const bagItems = cart.map((item, i) => <CartItem key={item.id + i} type="small" itemId={item.id+i} price={item.prices.filter(item => item.currency.symbol === this.props.currency)[0]} {...item}/>)
 
         let totalPrice = 0;
+        let totalQuantity = 0;
+
         cart.forEach(item => {
-            totalPrice = totalPrice + (item.prices.filter(item => item.currency.symbol === currency)[0].amount * item.quantity)
+            totalPrice = totalPrice + (item.prices.filter(item => item.currency.symbol === currency)[0].amount * item.quantity);
+            totalQuantity = totalQuantity + item.quantity;
         })
 
+        sessionStorage.setItem('totalQuantity', totalQuantity)
         sessionStorage.setItem('totalPrice', totalPrice)
 
         return (
@@ -57,7 +61,7 @@ class Header extends Component {
                 <NavLink to="/"><img src={logo} alt="logotype" className="logo" /></NavLink>
                 <div className="tools">
                     <div onClick={() => this.setState(state => ({currencyStatus: !state.currencyStatus}))} className="tools__currency">{currency}<span style={currencyStatus ? {"transform" : "rotate(225deg)"} : {"transform" : "rotate(45deg)"}} className="tools__arrow"></span></div>
-                    <div onClick={() => this.setState(state => ({bagStatus: !state.bagStatus}))} className="tools__cart"><img src={cartIcon} alt="emptyCart" /><span style={cart.length ? {"display":"flex"} : {"display":"none"}}>{cart.length}</span></div>
+                    <div onClick={() => this.setState(state => ({bagStatus: !state.bagStatus}))} className="tools__cart"><img src={cartIcon} alt="emptyCart" /><span style={cart.length ? {"display":"flex"} : {"display":"none"}}>{totalQuantity}</span></div>
                 </div>
                 <div className="currency" style={currencyStatus ? {"opacity": '1'} : {"opacity": "0"}}>
                     <div className="currency-dialog" style={currencyStatus ? {"display": 'block'} : {"display": "none"}}>

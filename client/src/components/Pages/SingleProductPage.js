@@ -1,7 +1,6 @@
 import { Component } from "react";
 import Header from "../Header/Header";
 import SingleProduct from "../SingleProduct/SingleProduct";
-import {connect} from 'react-redux'
 import {withRouter} from "react-router-dom"
 import {getProductInfo} from '../../actions/actions'
 
@@ -28,7 +27,7 @@ class SingleProductPage extends Component {
 
     render () {
         const {data} = this.state
-
+        
         return (
             <>
                 <Header/>
@@ -38,10 +37,4 @@ class SingleProductPage extends Component {
     }
 }
 
-// const mapStateToProps = (state) => {
-//     return {
-//         selectedProduct: state.selectedProduct,
-//     }
-// }
-
-export default connect(null)(withRouter(SingleProductPage))
+export default withRouter(SingleProductPage)

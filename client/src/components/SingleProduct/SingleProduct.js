@@ -40,17 +40,30 @@ class SingleProduct extends Component {
     }
 
 
-    onFormSubmit = (e) => {
+    onFormSubmit =  (e) => {
         e.preventDefault();
-        const {data, addProductToCart} = this.props;
+        const {data, addProductToCart, cart} = this.props;
         const {selectedAttributes} = this.state;
 
         let newItem = {...data, quantity: 1, attributes: selectedAttributes}
-        
-        addProductToCart(newItem)
 
-        console.log(newItem)
+        addProductToCart(newItem);
 
+        cart.map(cartItem => {
+
+            if (cartItem.id === newItem.id && JSON.stringify(cartItem.attributes) === JSON.stringify(newItem.attributes)) {
+                
+                const index = cart.findIndex(cartItem => JSON.stringify(cartItem.attributes) === JSON.stringify(newItem.attributes))
+
+                const before = cart.slice(0, index);
+                const after = cart.slice(index + 1);
+
+                this.props.updateCart([...before, {...cartItem, quantity: cartItem.quantity + 1}, ...after])
+
+                
+            }
+            return cartItem;
+        })        
     }
     
 
@@ -58,6 +71,8 @@ class SingleProduct extends Component {
         const {id, name, brand, prices, gallery, description, attributes, inStock} = this.props.data
 
         const {currency} = this.props;
+
+        sessionStorage.setItem('cart', JSON.stringify(this.props.cart))
 
         const photos = gallery.map((item, i) => <li key={i} onClick={() => this.onSelectPhoto(i)} className="product-slider__item"><img src={item} alt={name} /></li>);
 

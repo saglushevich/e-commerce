@@ -33,13 +33,6 @@ export const addProductToCart = (value) => {
     }
 }
 
-// export const setSelectedAttributes = (value) => {
-//     return {
-//         type: 'SET_SELECTED_ATTRIBUTES',
-//         payload: value
-//     }
-// }
-
 export const updateCart = (value) => {
     return {
         type: 'UPDATE_CART',

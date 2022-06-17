@@ -9,16 +9,10 @@ class Cart extends Component {
     render () {
         const {cart, currency} = this.props;
 
-        // console.log(cart)
         const cartItems = cart.map((item, i) => <CartItem type="large" key={item.id + i} {...item}/>)
 
-
-        let totalQuantity = 0;
-        cart.forEach(item => {
-            totalQuantity = totalQuantity + item.quantity
-        })
-
         let totalPrice = +sessionStorage.getItem('totalPrice');
+        let totalQuantity = +sessionStorage.getItem('totalQuantity');
 
         return (
             <section className="cart">

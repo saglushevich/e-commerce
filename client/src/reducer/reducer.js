@@ -1,10 +1,9 @@
 const initialState = {
     currencies: [],
     categories: [],
-    products: [],
+    products: {},
     currency: "$",
-    cart: [],
-    // selectedAttributes: []
+    cart: JSON.parse(sessionStorage.getItem('cart')) || [],
 }
 
 const reducer = (state = initialState, action) => { 
@@ -19,8 +18,6 @@ const reducer = (state = initialState, action) => {
             return {...state, currency: action.payload}
         case "ADD_PRODUCT_TO_CART":
             return {...state, cart: [...state.cart, action.payload]}
-        // case "SET_SELECTED_ATTRIBUTES":
-        //     return {...state, selectedAttributes: action.payload}
         case "UPDATE_CART":
             return {...state, cart: action.payload}
         default: 
