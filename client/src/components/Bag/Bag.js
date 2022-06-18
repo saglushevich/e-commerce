@@ -2,8 +2,8 @@ import { Component } from 'react';
 import './Bag.sass'
 import { connect } from 'react-redux';
 import * as actions from '../../reduxActions/reduxActions'
-import CartItem from '../CartItem/CartItem'
 import {NavLink} from "react-router-dom";
+import CartItemSmall from '../CartItem/CartItemSmall';
 
 class Bag extends Component {
     
@@ -17,7 +17,7 @@ class Bag extends Component {
     render () {
         const {cart, currency} = this.props;
 
-        const bagItems = cart.map((item, i) => <CartItem key={item.id + i} {...item}/>);
+        const bagItems = cart.map(item => <CartItemSmall key={item.id} type="small" {...item}/>);
 
         let totalPrice = 0;
 

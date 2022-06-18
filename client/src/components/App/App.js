@@ -14,7 +14,7 @@ class App extends Component {
     getData = async () => {
         await getCurrencies().then(items => items.data.currencies).then(items => this.props.setCurrencies(items));
         await getCategories().then(items => items.data.categories).then(items => this.props.setCategories(items));
-        await getProductsByCategories().then(items => items.data.category).then(items => this.props.setProducts(items));
+        await getProductsByCategories(sessionStorage.getItem('category') || 'all').then(items => items.data.category).then(items => this.props.setProducts(items));
     }
 
     componentDidMount() {

@@ -21,6 +21,7 @@ class Header extends Component {
 
     onSelectCategory = async (category) => {
         await getProductsByCategories(category).then(items => items.data.category).then(items => this.props.setProducts(items))
+        sessionStorage.setItem('category', category)
     }
 
     onToggleBagStatus = () => {

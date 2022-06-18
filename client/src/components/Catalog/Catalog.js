@@ -11,12 +11,12 @@ class Catalog extends Component {
         const {products} = this.props;
 
         const catalogItems = products.products ? 
-            products.products.map(item => <CatalogItem key={item.id} {...item}/>)
+            products.products.map(item => <CatalogItem key={item.id} data={item}/>)
         : 'loading'
 
         return (
             <section className="catalog">
-                <h1 onClick={() => console.log(store.getState())} className="catalog__header">{products.name} products</h1>
+                <h1 className="catalog__header">{products.name} products</h1>
                 <ul className="catalog-list">
                     {catalogItems}
                 </ul>

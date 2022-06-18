@@ -9,7 +9,7 @@ class Cart extends Component {
     render () {
         const {cart, currency} = this.props;
 
-        const cartItems = cart.map((item, i) => <CartItem key={item.id + i} {...item}/>)
+        const cartItems = cart.map((item, i) => <CartItem key={item.id + i} type="large" {...item}/>)
 
         let totalPrice = +sessionStorage.getItem('totalPrice');
         let totalQuantity = +sessionStorage.getItem('totalQuantity');

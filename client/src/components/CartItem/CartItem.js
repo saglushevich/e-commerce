@@ -15,17 +15,17 @@ class CartItem extends Component {
 
     onChangeQuantity = (value) => {
         let item = {...this.props};
-        let {cart} = this.props;
+        let {cart, quantity, id, updateCart} = this.props;
 
-        if (this.props.quantity < 1) {
-            item = {...this.props, quantity: 1};
+        if (quantity < 1) {
+            item = {...item, quantity: 1};
         } else {
-            item = {...this.props, quantity: this.props.quantity + value}
+            item = {...item, quantity: quantity + value}
         }
 
-        const itemId = cart.findIndex(elem => elem.id === this.props.id);
+        const itemId = cart.findIndex(elem => elem.id === id);
         
-        this.props.updateCart([...cart.slice(0, itemId), item, ...cart.slice(itemId + 1)])
+        updateCart([...cart.slice(0, itemId), item, ...cart.slice(itemId + 1)])
     }
 
     nextSlide = () => {
@@ -67,33 +67,22 @@ class CartItem extends Component {
 
         let price = prices.filter(item => item.currency.symbol === currency)[0];
 
-        const classes = {
-            cartMainClass: type === 'small' ? " cart__item_small" : "", 
-            cartHeaderClass: type === 'small' ? " cart-info__name_small" : "", 
-            cartPriceClass: type === 'small' ? " cart-info__price_small" : "",
-            cartPlusBtnClass: type === 'small' ? " cart-amount__btn_small cart-amount__btn_plus_small" : "",
-            cartMinusBtnClass: type === 'small' ? " cart-amount__btn_small" : "",
-            cartAmountTextClass: type === 'small' ? " cart-amount__text_small" : "",
-            cartImagesClass: type === 'small' ? " cart-images_small" : "",
-            cartImageClass: type === 'small' ? " cart-image_small" : ""
-        }
-
         return (
-            <li key={id} className={"cart__item" + classes.cartMainClass}>
+            <li key={id} className="cart__item">
                 <div className="cart-info">
-                     <h2 className={"cart-info__name" + classes.cartHeaderClass}>{name}</h2>
-                     <h3 className={"cart-info__name cart-info__name_medium" + classes.cartHeaderClass}>{brand}</h3>
-                     <h3 className={"cart-info__price" + classes.cartPriceClass} style={{"marginBottom": "20px"}}>{price.currency.symbol}{(price.amount * quantity).toFixed(2)}</h3>
+                     <h2 className="cart-info__name">{name}</h2>
+                     <h3 className="cart-info__name cart-info__name_medium">{brand}</h3>
+                     <h3 className="cart-info__price" style={{"marginBottom": "20px"}}>{price.currency.symbol}{(price.amount * quantity).toFixed(2)}</h3>
                     {attributesItems}
 
                 </div>
                 <div className="cart-amount">
-                    <div onClick={() => this.onChangeQuantity(1)} className={"cart-amount__btn cart-amount__btn_plus" + classes.cartPlusBtnClass}></div>
-                    <div className={"cart-amount__text" + classes.cartAmountTextClass}>{quantity}</div>
-                    <div onClick={() => this.onChangeQuantity(-1)} className={"cart-amount__btn" + classes.cartMinusBtnClass}></div>
+                    <div onClick={() => this.onChangeQuantity(1)} className="cart-amount__btn cart-amount__btn_plus"></div>
+                    <div className="cart-amount__text">{quantity}</div>
+                    <div onClick={() => this.onChangeQuantity(-1)} className="cart-amount__btn"></div>
                 </div>
-                <div className={"cart-images" + classes.cartImagesClass}>
-                    <img src={gallery[slideIndex - 1]} alt={name} className={"cart-image" + classes.cartImageClass}/>
+                <div className="cart-images">
+                    <img src={gallery[slideIndex - 1]} alt={name} className="cart-image"/>
                     <div className="cart-images__arrows" style={gallery.length > 1 ? {"display":"flex"} : {"display":"none"}}>
                         <div onClick={() => this.prevSlide()} className="cart-images__arrow cart-images__arrow_left"><img src={arrow} alt="arrow" /></div>
                         <div onClick={() => this.nextSlide()} className="cart-images__arrow"><img src={arrow} alt="arrow" /></div>

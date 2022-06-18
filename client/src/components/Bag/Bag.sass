@@ -7,6 +7,7 @@
     right: 0
     left: 0
     background: rgba(57, 55, 72, 0.22)
+    z-index: 500
     &-dialog
         position: relative
         width: 1240px
@@ -17,9 +18,16 @@
         background-color: #fff
         z-index: 1000
         width: 325px
+        height: 440px
+        overflow-y: auto
         padding: 32px 16px
         top: 0
         right: -25px
+        &::-webkit-scrollbar
+            width: 6px
+        &::-webkit-scrollbar-thumb
+            background-color: #5ECE7B
+            border-radius: 25px
     &__header
         font-family: 'Raleway'
         font-weight: 700
