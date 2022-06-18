@@ -2,7 +2,7 @@ const initialState = {
     currencies: [],
     categories: [],
     products: {},
-    currency: "$",
+    currency: sessionStorage.getItem('currency') || "$",
     cart: JSON.parse(sessionStorage.getItem('cart')) || [],
 }
 

@@ -83,7 +83,7 @@ class CartItem extends Component {
                 <div className="cart-info">
                      <h2 className={"cart-info__name" + classes.cartHeaderClass}>{name}</h2>
                      <h3 className={"cart-info__name cart-info__name_medium" + classes.cartHeaderClass}>{brand}</h3>
-                     <h3 className={"cart-info__price" + classes.cartPriceClass} style={{"marginBottom": "20px"}}>{price.currency.symbol}{price.amount * quantity}</h3>
+                     <h3 className={"cart-info__price" + classes.cartPriceClass} style={{"marginBottom": "20px"}}>{price.currency.symbol}{(price.amount * quantity).toFixed(2)}</h3>
                     {attributesItems}
 
                 </div>

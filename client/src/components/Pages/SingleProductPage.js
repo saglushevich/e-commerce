@@ -27,7 +27,7 @@ class SingleProductPage extends Component {
 
     render () {
         const {data} = this.state
-        
+
         return (
             <>
                 <Header/>
