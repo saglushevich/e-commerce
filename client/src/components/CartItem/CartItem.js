@@ -3,7 +3,7 @@ import './CartItem.sass'
 import arrow from '../../resources/icons/arrow.svg'
 import * as actions from '../../reduxActions/reduxActions'
 import { connect } from 'react-redux';
-import ProductAttributesSelection from '../ProductAttributesSelection/ProductAttributesSelection';
+import ProductAttributes from '../ProductAttributes/ProductAttributes';
 
 class CartItem extends Component {
     constructor (props) {
@@ -17,15 +17,15 @@ class CartItem extends Component {
         let item = {...this.props};
         let {cart, updateCart, quantity, id} = this.props;
 
-        if (quantity < 1) {
-            item = {...item, quantity: 1};
-        } else {
-            item = {...item, quantity: quantity + value}
-        }
-
-        const itemId = cart.findIndex(elem => elem.id === id);
+        item = {...item, quantity: quantity + value}
         
-        updateCart([...cart.slice(0, itemId), item, ...cart.slice(itemId + 1)])
+        if (value < 0 && quantity < 2) {
+
+            updateCart([...cart.filter(item => item.id !== id)])
+        } else {
+            const itemId = cart.findIndex(elem => elem.id === id);
+            updateCart([...cart.slice(0, itemId), item, ...cart.slice(itemId + 1)]);
+        }
     }
 
     nextSlide = () => {
@@ -64,16 +64,17 @@ class CartItem extends Component {
         const {slideIndex} = this.state;
 
         sessionStorage.setItem('cart', JSON.stringify(this.props.cart))
-        let attributesItems = attributes.map(item => <ProductAttributesSelection type="large" key={item.id} data={item} />)
 
         let price = prices.filter(item => item.currency.symbol === currency)[0];
+
+        let attributesItems = attributes.map(item => <ProductAttributes type="large" key={item.id} data={item}/>)
 
         return (
             <li key={id} className="cart__item">
                 <div className="cart-info">
                      <h2 className="cart-info__name">{name}</h2>
                      <h3 className="cart-info__name cart-info__name_medium">{brand}</h3>
-                     <h3 className="cart-info__price" style={{"marginBottom": "20px"}}>{price.currency.symbol}{(price.amount * quantity).toFixed(2)}</h3>
+                     <h3 className="cart-info__price" style={{"marginBottom": "20px"}}>{price.currency.symbol}{(price.amount * quantity).toFixed(2)}</h3>                    
                     {attributesItems}
 
                 </div>

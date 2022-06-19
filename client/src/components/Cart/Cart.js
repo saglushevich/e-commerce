@@ -5,24 +5,7 @@ import * as actions from '../../reduxActions/reduxActions'
 import CartItem from '../CartItem/CartItem';
 
 class Cart extends Component {
-    // constructor (props) {
-    //     super(props);
-    //     this.state = {
-    //         products: this.props.cart
-    //     }
-    // }
-
-    // componentDidUpdate (prevProps) {
-    //     if (prevProps.cart !== this.props.cart) {
-
-    //         const newCart = this.state.products.filter(item => item.quantity !== 0);
-
-    //         this.setState({
-    //             products: [...newCart]
-    //         })
-    //     }
-    // }
-
+    
     render () {
         const {currency, cart} = this.props;
         const cartItems = cart.map((item, i) => <CartItem key={item.id + i} {...item}/>)

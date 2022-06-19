@@ -2,7 +2,7 @@ import { Component } from 'react';
 import './SingleProduct.sass'
 import {connect} from 'react-redux'
 import * as actions from '../../reduxActions/reduxActions'
-import ProductAttributesSelection from '../ProductAttributesSelection/ProductAttributesSelection';
+import ProductAttributesSelectionForm from '../ProductAttributesSelectionForm/ProductAttributesSelectionForm';
 
 class SingleProduct extends Component {
     constructor (props) {
@@ -13,24 +13,26 @@ class SingleProduct extends Component {
         }
     }
 
-    onSetSelectedAttributes = (newSelectedAttributes) => {
-        this.setState({
-            selectedAttributes: newSelectedAttributes
-        })
-    }
-
     onSetAttributes = (name, value) => {
         const {selectedAttributes} = this.state
         selectedAttributes.map(attr => {
             if (attr.name === name) {
 
-                const notChangedAttributes = selectedAttributes.filter(item => item.name !== name);
+                const attributeIndex = selectedAttributes.findIndex(elem => elem.name === name)
+
                 const changedAttribute = {...attr, items: attr.items.map(item => item.value === value ? {...item, chosen: true} : {...item, chosen: false})};
                 
-                this.onSetSelectedAttributes([...notChangedAttributes, changedAttribute])
+                const before = selectedAttributes.slice(0, attributeIndex);
+                const after = selectedAttributes.slice(attributeIndex + 1);
+
+                this.setState({
+                    selectedAttributes: [...before, changedAttribute, ...after]
+                })
             }
             return attr;
         })
+
+        
     }
 
     onSelectPhoto = (i) => {
@@ -64,8 +66,8 @@ class SingleProduct extends Component {
             }
             return cartItem;
         })        
+
     }
-    
 
     render () {
         const {id, name, brand, prices, gallery, description, attributes, inStock} = this.props.data
@@ -76,7 +78,7 @@ class SingleProduct extends Component {
 
         const photos = gallery.map((item, i) => <li key={i} onClick={() => this.onSelectPhoto(i)} className="product-slider__item"><img src={item} alt={name} /></li>);
 
-        const attributesItems = attributes.map(item => <ProductAttributesSelection  key={item.id} data={item} onSetAttributes={this.onSetAttributes}/>)
+        const attributesItems = attributes.map(item => <ProductAttributesSelectionForm key={item.id} data={item} onSetAttributes={this.onSetAttributes}/>)
         
         return (
             <div className="product" key={id}>

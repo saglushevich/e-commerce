@@ -1,0 +1,85 @@
+.attributes
+    &-header
+        font-family: 'Roboto Condensed'
+        font-weight: 700
+        font-size: 18px
+        line-height: 18px
+        color: #1D1F22
+        text-transform: uppercase
+    &-list
+        display: flex
+        align-items: center
+        flex-wrap: wrap
+        margin-top: 10px
+        &_column
+            display: grid
+            grid-template-columns: repeat(2, 45px)
+            column-gap: 8px
+            row-gap: 8px
+            margin-top: 10px
+
+    &__item
+        display: flex
+        align-items: center
+        justify-content: center
+        width: 65px
+        height: 45px
+        background: transparent
+        border: 1px solid #1D1F22
+        font-weight: 400
+        font-size: 16px
+        line-height: 18px
+        letter-spacing: 0.05em
+        color: #1D1F22
+        cursor: pointer
+        &_small
+            width: 45px
+            height: 30px
+            font-size: 12px
+        &:nth-last-child(n+2)
+            margin-right: 8px
+        &_active
+            background-color: #1D1F22
+            color: #FFFFFF
+        &_colored
+            width: 32px
+            height: 32px
+            cursor: pointer
+            &_small
+                width: 16px
+                height: 16px
+                cursor: pointer
+                &:nth-last-child(n+2)
+                    margin-right: 8px
+                &:nth-child(n+6)
+                    margin-top: 8px
+                &_active
+                    position: relative
+                    display: flex
+                    align-items: center
+                    justify-content: center
+                    &::before
+                        position: absolute
+                        content: ""
+                        display: block
+                        width: 16px
+                        height: 16px
+                        padding: 1px
+                        border: 1px solid #5ECE7B
+            &_active
+                position: relative
+                display: flex
+                align-items: center
+                justify-content: center
+                &::before
+                    position: absolute
+                    content: ""
+                    display: block
+                    width: 32px
+                    height: 32px
+                    padding: 1px
+                    border: 1px solid #5ECE7B
+            &:nth-last-child(n+2)
+                margin-right: 8px
+    &:nth-child(n+2)
+        margin-top: 15px

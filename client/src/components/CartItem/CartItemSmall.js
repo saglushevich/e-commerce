@@ -1,7 +1,7 @@
 import { Component } from "react";
 import { connect } from "react-redux";
 import * as actions from '../../reduxActions/reduxActions'
-import ProductAttributesSelection from '../ProductAttributesSelection/ProductAttributesSelection';
+import ProductAttributes from '../ProductAttributes/ProductAttributes';
 
 class CartItemSmall extends Component {
 
@@ -9,15 +9,15 @@ class CartItemSmall extends Component {
         let item = {...this.props};
         let {cart, updateCart, quantity, id} = this.props;
 
-        if (quantity < 1) {
-            item = {...this.props, quantity: 1};
-        } else {
-            item = {...this.props, quantity: quantity + value}
-        }
-
-        const itemId = cart.findIndex(elem => elem.id === id);
+        item = {...item, quantity: quantity + value}
         
-        updateCart([...cart.slice(0, itemId), item, ...cart.slice(itemId + 1)])
+        if (value < 0 && quantity < 2) {
+
+            updateCart([...cart.filter(item => item.id !== id)])
+        } else {
+            const itemId = cart.findIndex(elem => elem.id === id);
+            updateCart([...cart.slice(0, itemId), item, ...cart.slice(itemId + 1)]);
+        }
     }
     
     render () {
@@ -26,7 +26,7 @@ class CartItemSmall extends Component {
         const price = prices.filter(item => item.currency.symbol === currency)[0];
 
         sessionStorage.setItem('cart', JSON.stringify(this.props.cart))
-        const attributesItems = attributes.map(item => <ProductAttributesSelection type="small" key={item.id} data={item} />)
+        const attributesItems = attributes.map(item => <ProductAttributes type="small" key={item.id} data={item} />)
         
         return (
             <li className="cart__item cart__item_small">
