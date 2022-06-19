@@ -12,9 +12,11 @@ import {connect} from 'react-redux'
 class App extends Component {
 
     getData = async () => {
-        await getCurrencies().then(items => items.data.currencies).then(items => this.props.setCurrencies(items));
-        await getCategories().then(items => items.data.categories).then(items => this.props.setCategories(items));
-        await getProductsByCategories(sessionStorage.getItem('category') || 'all').then(items => items.data.category).then(items => this.props.setProducts(items));
+        const {setCurrencies, setCategories, setProducts} = this.props;
+        
+        await getCurrencies().then(items => items.currencies).then(items => setCurrencies(items));
+        await getCategories().then(items => items.categories).then(items => setCategories(items));
+        await getProductsByCategories(sessionStorage.getItem('category') || 'all').then(items => items.category).then(items => setProducts(items));
     }
 
     componentDidMount() {
@@ -42,4 +44,14 @@ class App extends Component {
     }
 }
 
-export default connect(null, actions)(App);
+const mapStateToProps = (state) => {
+    return {
+        cart: state.cart,
+        currency: state.currency,
+        products: state.products
+    }
+}
+
+
+
+export default connect(mapStateToProps, actions)(App);

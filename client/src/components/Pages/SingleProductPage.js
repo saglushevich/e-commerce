@@ -14,7 +14,7 @@ class SingleProductPage extends Component {
     }
 
     getData = async () => {
-        await getProductInfo(this.state.productId).then(items => items.data.product).then(items => {
+        await getProductInfo(this.state.productId).then(items => items.product).then(items => {
             this.setState({
                 data: items
             })

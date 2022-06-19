@@ -15,7 +15,7 @@ class CartItem extends Component {
 
     onChangeQuantity = (value) => {
         let item = {...this.props};
-        let {cart, quantity, id, updateCart} = this.props;
+        let {cart, updateCart, quantity, id} = this.props;
 
         if (quantity < 1) {
             item = {...item, quantity: 1};
@@ -60,10 +60,11 @@ class CartItem extends Component {
     }
 
     render () {
-        const {name, brand, gallery, type, quantity, prices, currency, id, attributes} = this.props;
+        const {name, brand, gallery, quantity, prices, currency, id, attributes} = this.props;
         const {slideIndex} = this.state;
 
-        let attributesItems = attributes.map(item => <ProductAttributesSelection type={type} key={item.id} data={item} />)
+        sessionStorage.setItem('cart', JSON.stringify(this.props.cart))
+        let attributesItems = attributes.map(item => <ProductAttributesSelection type="large" key={item.id} data={item} />)
 
         let price = prices.filter(item => item.currency.symbol === currency)[0];
 

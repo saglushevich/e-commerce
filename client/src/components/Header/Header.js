@@ -42,7 +42,7 @@ class Header extends Component {
 
 
     render () {
-        const {categories, currency, cart, products} = this.props;
+        const {categories, currency, products} = this.props;
         const {currencyStatus, bagStatus} = this.state;
 
         const menuItems = categories.map(item => {
@@ -50,13 +50,18 @@ class Header extends Component {
             return <li onClick={() => this.onSelectCategory(name)} key={name} className={products.name === name ? "menu__item menu__item_active"  : "menu__item"}>{name}</li>
         })
 
+
+        let totalPrice = 0;
         let totalQuantity = 0;
 
-        cart.forEach(item => {
+        this.props.cart.forEach(item => {
+            totalPrice = totalPrice + (item.prices.filter(item => item.currency.symbol === this.props.currency)[0].amount * item.quantity);
             totalQuantity = totalQuantity + item.quantity;
         })
 
         sessionStorage.setItem('totalQuantity', totalQuantity)
+        sessionStorage.setItem('totalPrice', totalPrice)
+        // let totalQuantity = +sessionStorage.getItem('totalQuantity')
         
         return (
             <header className="header">

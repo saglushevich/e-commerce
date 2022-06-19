@@ -25,6 +25,7 @@ class CartItemSmall extends Component {
 
         const price = prices.filter(item => item.currency.symbol === currency)[0];
 
+        sessionStorage.setItem('cart', JSON.stringify(this.props.cart))
         const attributesItems = attributes.map(item => <ProductAttributesSelection type="small" key={item.id} data={item} />)
         
         return (

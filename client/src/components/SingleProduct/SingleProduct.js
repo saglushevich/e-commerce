@@ -45,13 +45,13 @@ class SingleProduct extends Component {
         const {data, addProductToCart, cart} = this.props;
         const {selectedAttributes} = this.state;
 
-        let newItem = {...data, quantity: 1, attributes: selectedAttributes}
+        let newItem = {...data, quantity: 1, id: data.id + Math.random() * 1000, attributes: selectedAttributes}
 
         addProductToCart(newItem);
 
         cart.map(cartItem => {
 
-            if (cartItem.id === newItem.id && JSON.stringify(cartItem.attributes) === JSON.stringify(newItem.attributes)) {
+            if (cartItem.name === newItem.name && JSON.stringify(cartItem.attributes) === JSON.stringify(newItem.attributes)) {
                 
                 const index = cart.findIndex(cartItem => JSON.stringify(cartItem.attributes) === JSON.stringify(newItem.attributes))
 

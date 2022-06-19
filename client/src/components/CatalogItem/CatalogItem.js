@@ -12,7 +12,7 @@ class CatalogItem extends Component {
 
         cart.map(cartItem => {
 
-            if (cartItem.id === newItem.id && JSON.stringify(cartItem.attributes) === JSON.stringify(newItem.attributes)) {
+            if (cartItem.name === newItem.name && JSON.stringify(cartItem.attributes) === JSON.stringify(newItem.attributes)) {
                 
                 const index = cart.findIndex(cartItem => JSON.stringify(cartItem.attributes) === JSON.stringify(newItem.attributes))
 
@@ -31,7 +31,7 @@ class CatalogItem extends Component {
 
         if (!data.attributes.length) {
 
-            let newItem = {...data, quantity: 1};
+            let newItem = {...data, quantity: 1, id: data.id + Math.random() * 1000};
             addProductToCart(newItem);
             this.onCheckProductQuantity(newItem);
 
@@ -41,7 +41,7 @@ class CatalogItem extends Component {
                 return {...attr, items: attr.items.map((item, i) => i === 0 ?  {...item, chosen: true} :  {...item, chosen: false})}
             })
 
-            let newItem = {...data, quantity: 1, attributes: newAttributes};
+            let newItem = {...data, quantity: 1, attributes: newAttributes, id: data.id + Math.random() * 1000};
 
             addProductToCart(newItem)
             this.onCheckProductQuantity(newItem)

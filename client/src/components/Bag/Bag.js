@@ -6,6 +6,24 @@ import {NavLink} from "react-router-dom";
 import CartItemSmall from '../CartItem/CartItemSmall';
 
 class Bag extends Component {
+    constructor (props) {
+        super(props);
+        this.state = {
+            products: this.props.cart
+        }
+    }
+
+    componentDidUpdate (prevProps) {
+        if (prevProps.cart !== this.props.cart) {
+
+            const newCart = this.props.cart.filter(item => item.quantity !== 0);
+            this.setState({
+                products: [...newCart]
+            })
+
+            sessionStorage.setItem('cart', JSON.stringify(newCart))
+        }
+    }
     
     onCloseTool = (e) => {
         const {onToggleBagStatus} = this.props;
@@ -15,18 +33,13 @@ class Bag extends Component {
     }
 
     render () {
-        const {cart, currency} = this.props;
+        const {currency} = this.props;
+        const {products} = this.state;
 
-        const bagItems = cart.map(item => <CartItemSmall key={item.id} type="small" {...item}/>);
+        const bagItems = products.map((item, i) => <CartItemSmall key={item.id + i} {...item}/>);
 
-        let totalPrice = 0;
-
-        cart.forEach(item => {
-            totalPrice = totalPrice + (item.prices.filter(item => item.currency.symbol === currency)[0].amount * item.quantity);
-        })
-
-        sessionStorage.setItem('totalPrice', totalPrice)
-
+        
+        let totalPrice = +sessionStorage.getItem('totalPrice');
         let totalQuantity = +sessionStorage.getItem('totalQuantity');
 
         return (

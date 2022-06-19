@@ -16,7 +16,7 @@ class Catalog extends Component {
 
         return (
             <section className="catalog">
-                <h1 className="catalog__header">{products.name} products</h1>
+                <h1 onClick={() => console.log(store.getState())} className="catalog__header">{products.name} products</h1>
                 <ul className="catalog-list">
                     {catalogItems}
                 </ul>

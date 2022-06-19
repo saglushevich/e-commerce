@@ -40,7 +40,7 @@ class ProductAttributesSelection extends Component{
                 <li key={id} className={classes.productSelectionElementClass}>
                     <input defaultChecked={chosen} disabled={onSetAttributes ? false : true} onChange={onSetAttributes ? () => onSetAttributes(data.name, value) : null} required type="radio" name={index} id={data.id+value+index} className="product-selection__input"/>
                     {data.name === 'Color' ?  
-                    <label htmlFor={data.id+value+index} style={{'background': `${value}`}} className={classes.productSelectionLabelClass}></label> : 
+                    <label htmlFor={data.id+value+index} style={value === "#FFFFFF" ? {'border':"1px solid #D3D2D5", 'background': `${value}`} : {'background': `${value}`}} className={classes.productSelectionLabelClass}></label> : 
                     <label htmlFor={data.id+value+index} className={classes.productSelectionLabelClass}>{value}</label>}
                 </li>
             )
