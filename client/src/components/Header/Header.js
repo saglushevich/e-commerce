@@ -20,7 +20,7 @@ class Header extends Component {
     }
 
     onSelectCategory = async (category) => {
-        await getProductsByCategories(category).then(items => items.data.category).then(items => this.props.setProducts(items))
+        await getProductsByCategories(category).then(items => items.category).then(items => this.props.setProducts(items))
         sessionStorage.setItem('category', category)
     }
 
@@ -47,7 +47,12 @@ class Header extends Component {
 
         const menuItems = categories.map(item => {
             const {name} = item;
-            return <li onClick={() => this.onSelectCategory(name)} key={name} className={products.name === name ? "menu__item menu__item_active"  : "menu__item"}>{name}</li>
+            let itemClass = products.name === name ? "menu__item menu__item_active"  : "menu__item";
+            return (
+                <NavLink to="/" key={name}>
+                    <li onClick={() => this.onSelectCategory(name)} className={itemClass}>{name}</li>
+                </NavLink>
+            )
         })
 
 
@@ -61,7 +66,6 @@ class Header extends Component {
 
         sessionStorage.setItem('totalQuantity', totalQuantity)
         sessionStorage.setItem('totalPrice', totalPrice)
-        // let totalQuantity = +sessionStorage.getItem('totalQuantity')
         
         return (
             <header className="header">

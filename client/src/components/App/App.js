@@ -7,16 +7,33 @@ import {BrowserRouter, Route, Switch} from "react-router-dom";
 import {getCurrencies, getCategories, getProductsByCategories} from '../../actions/actions'
 import * as actions from '../../reduxActions/reduxActions'
 import {connect} from 'react-redux'
+import Spinner from "../Spinner/Spinner";
 
 
 class App extends Component {
+    constructor (props) {
+        super(props);
+        this.state = {
+            dataLoading: true
+        }
+    }
+
+    toggleDataLoading = (value) => {
+        this.setState({
+            dataLoading: value
+        })
+    }
 
     getData = async () => {
+        this.toggleDataLoading(true)
+
         const {setCurrencies, setCategories, setProducts} = this.props;
-        
+
         await getCurrencies().then(items => items.currencies).then(items => setCurrencies(items));
         await getCategories().then(items => items.categories).then(items => setCategories(items));
         await getProductsByCategories(sessionStorage.getItem('category') || 'all').then(items => items.category).then(items => setProducts(items));
+
+        this.toggleDataLoading(false)
     }
 
     componentDidMount() {
@@ -27,6 +44,7 @@ class App extends Component {
         return (
             <BrowserRouter>
                 <div className="container">
+                    {this.state.dataLoading ? <Spinner/> :
                     <Switch>
                         <Route exact path="/">
                             <CatalogPage/>
@@ -37,21 +55,12 @@ class App extends Component {
                         <Route path="/cart">
                             <CartPage/>
                         </Route>
-                    </Switch>
+                    </Switch>}
                 </div>
             </BrowserRouter>
         )
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        cart: state.cart,
-        currency: state.currency,
-        products: state.products
-    }
-}
 
-
-
-export default connect(mapStateToProps, actions)(App);
+export default connect(null, actions)(App);

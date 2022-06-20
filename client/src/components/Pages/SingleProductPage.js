@@ -3,6 +3,7 @@ import Header from "../Header/Header";
 import SingleProduct from "../SingleProduct/SingleProduct";
 import {withRouter} from "react-router-dom"
 import {getProductInfo} from '../../actions/actions'
+import Spinner from "../Spinner/Spinner";
 
 class SingleProductPage extends Component {
     constructor (props) {
@@ -27,11 +28,10 @@ class SingleProductPage extends Component {
 
     render () {
         const {data} = this.state
-
         return (
             <>
                 <Header/>
-                {data.name ? <SingleProduct data={data}/> : 'loading'}
+                {data.name ? <SingleProduct data={data}/>  : <Spinner/>}
             </>
         )
     }
