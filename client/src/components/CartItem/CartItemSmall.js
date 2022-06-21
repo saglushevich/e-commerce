@@ -2,23 +2,9 @@ import { Component } from "react";
 import { connect } from "react-redux";
 import * as actions from '../../reduxActions/reduxActions'
 import ProductAttributes from '../ProductAttributes/ProductAttributes';
+import ProductQuantitySelection from "../ProductQuantitySelection/ProductQuantitySelection";
 
 class CartItemSmall extends Component {
-
-    onChangeQuantity = (value) => {
-        let item = {...this.props};
-        let {cart, updateCart, quantity, id} = this.props;
-
-        item = {...item, quantity: quantity + value}
-        
-        if (value < 0 && quantity < 2) {
-
-            updateCart([...cart.filter(item => item.id !== id)])
-        } else {
-            const itemId = cart.findIndex(elem => elem.id === id);
-            updateCart([...cart.slice(0, itemId), item, ...cart.slice(itemId + 1)]);
-        }
-    }
     
     render () {
         const {prices, name, brand, quantity, gallery, attributes, currency} = this.props;
@@ -37,11 +23,7 @@ class CartItemSmall extends Component {
                     {attributesItems}
 
                 </div>
-                <div className="cart-amount">
-                    <div onClick={() => this.onChangeQuantity(1)} className="cart-amount__btn cart-amount__btn_plus cart-amount__btn_small cart-amount__btn_plus_small"></div>
-                    <div className="cart-amount__text cart-amount__text_small">{quantity}</div>
-                    <div onClick={() => this.onChangeQuantity(-1)} className="cart-amount__btn cart-amount__btn_small"></div>
-                </div>
+                <ProductQuantitySelection type="small" data={this.props}/>
                 <div className="cart-images cart-images_small">
                     <img src={gallery[0]} alt={name} className="cart-image cart-image_small"/>
                 </div>

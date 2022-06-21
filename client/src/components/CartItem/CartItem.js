@@ -4,27 +4,13 @@ import arrow from '../../resources/icons/arrow.svg'
 import * as actions from '../../reduxActions/reduxActions'
 import { connect } from 'react-redux';
 import ProductAttributes from '../ProductAttributes/ProductAttributes';
+import ProductQuantitySelection from "../ProductQuantitySelection/ProductQuantitySelection";
 
 class CartItem extends Component {
     constructor (props) {
         super(props);
         this.state = {
             slideIndex: 1
-        }
-    }
-
-    onChangeQuantity = (value) => {
-        let item = {...this.props};
-        let {cart, updateCart, quantity, id} = this.props;
-
-        item = {...item, quantity: quantity + value}
-        
-        if (value < 0 && quantity < 2) {
-
-            updateCart([...cart.filter(item => item.id !== id)])
-        } else {
-            const itemId = cart.findIndex(elem => elem.id === id);
-            updateCart([...cart.slice(0, itemId), item, ...cart.slice(itemId + 1)]);
         }
     }
 
@@ -78,11 +64,7 @@ class CartItem extends Component {
                     {attributesItems}
 
                 </div>
-                <div className="cart-amount">
-                    <div onClick={() => this.onChangeQuantity(1)} className="cart-amount__btn cart-amount__btn_plus"></div>
-                    <div className="cart-amount__text">{quantity}</div>
-                    <div onClick={() => this.onChangeQuantity(-1)} className="cart-amount__btn"></div>
-                </div>
+                <ProductQuantitySelection type="large" data={this.props}/>
                 <div className="cart-images">
                     <img src={gallery[slideIndex - 1]} alt={name} className="cart-image"/>
                     <div className="cart-images__arrows" style={gallery.length > 1 ? {"display":"flex"} : {"display":"none"}}>
